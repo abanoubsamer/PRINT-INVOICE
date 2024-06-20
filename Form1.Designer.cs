@@ -28,19 +28,21 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(App));
             pmain = new Panel();
+            quantity = new TextBox();
+            price = new TextBox();
             button2 = new Button();
             add = new Button();
-            textBox2 = new TextBox();
+            total = new TextBox();
             label8 = new Label();
-            dataGridView1 = new DataGridView();
+            dgv = new DataGridView();
             coliteam = new DataGridViewTextBoxColumn();
             colqty = new DataGridViewTextBoxColumn();
             colprice = new DataGridViewTextBoxColumn();
             colsubtotal = new DataGridViewTextBoxColumn();
-            quantity = new NumericUpDown();
             label7 = new Label();
-            numericUpDown1 = new NumericUpDown();
             label6 = new Label();
             Category = new ComboBox();
             label5 = new Label();
@@ -53,23 +55,25 @@
             lable2 = new Label();
             label2 = new Label();
             Number_Invoice = new TextBox();
+            error = new ErrorProvider(components);
+            printDocument1 = new System.Drawing.Printing.PrintDocument();
+            printPreviewDialog1 = new PrintPreviewDialog();
             pmain.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)quantity).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgv).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)error).BeginInit();
             SuspendLayout();
             // 
             // pmain
             // 
+            pmain.Controls.Add(quantity);
+            pmain.Controls.Add(price);
             pmain.Controls.Add(button2);
             pmain.Controls.Add(add);
-            pmain.Controls.Add(textBox2);
+            pmain.Controls.Add(total);
             pmain.Controls.Add(label8);
-            pmain.Controls.Add(dataGridView1);
-            pmain.Controls.Add(quantity);
+            pmain.Controls.Add(dgv);
             pmain.Controls.Add(label7);
-            pmain.Controls.Add(numericUpDown1);
             pmain.Controls.Add(label6);
             pmain.Controls.Add(Category);
             pmain.Controls.Add(label5);
@@ -82,10 +86,35 @@
             pmain.Controls.Add(lable2);
             pmain.Controls.Add(label2);
             pmain.Controls.Add(Number_Invoice);
-            pmain.Location = new Point(4, 12);
+            pmain.Location = new Point(10, 12);
             pmain.Name = "pmain";
-            pmain.Size = new Size(1227, 684);
+            pmain.Size = new Size(1227, 881);
             pmain.TabIndex = 9;
+            // 
+            // quantity
+            // 
+            quantity.ForeColor = Color.Black;
+            quantity.Location = new Point(646, 322);
+            quantity.Name = "quantity";
+            quantity.Size = new Size(196, 47);
+            quantity.TabIndex = 40;
+            quantity.Text = "0";
+            quantity.TextAlign = HorizontalAlignment.Center;
+            quantity.TextChanged += quantity_TextChanged;
+            quantity.Enter += quantity_Enter;
+            quantity.KeyDown += quantity_KeyDown_1;
+            quantity.KeyPress += quantity_KeyPress;
+            // 
+            // price
+            // 
+            price.BackColor = Color.Green;
+            price.ForeColor = Color.White;
+            price.Location = new Point(257, 324);
+            price.Name = "price";
+            price.ReadOnly = true;
+            price.Size = new Size(227, 47);
+            price.TabIndex = 39;
+            price.TextAlign = HorizontalAlignment.Center;
             // 
             // button2
             // 
@@ -96,6 +125,7 @@
             button2.TabIndex = 38;
             button2.Text = "Print";
             button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
             // 
             // add
             // 
@@ -108,18 +138,18 @@
             add.UseVisualStyleBackColor = true;
             add.Click += add_Click;
             // 
-            // textBox2
+            // total
             // 
-            textBox2.BackColor = Color.DarkViolet;
-            textBox2.Font = new Font("Segoe UI", 19.8000011F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            textBox2.ForeColor = Color.Gold;
-            textBox2.Location = new Point(848, 322);
-            textBox2.Name = "textBox2";
-            textBox2.ReadOnly = true;
-            textBox2.Size = new Size(177, 51);
-            textBox2.TabIndex = 36;
-            textBox2.Text = "0";
-            textBox2.TextAlign = HorizontalAlignment.Center;
+            total.BackColor = Color.DarkViolet;
+            total.Font = new Font("Segoe UI", 19.8000011F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            total.ForeColor = Color.Gold;
+            total.Location = new Point(848, 322);
+            total.Name = "total";
+            total.ReadOnly = true;
+            total.Size = new Size(177, 51);
+            total.TabIndex = 36;
+            total.Text = "0";
+            total.TextAlign = HorizontalAlignment.Center;
             // 
             // label8
             // 
@@ -131,17 +161,20 @@
             label8.TextAlign = ContentAlignment.MiddleCenter;
             label8.Click += label8_Click;
             // 
-            // dataGridView1
+            // dgv
             // 
-            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { coliteam, colqty, colprice, colsubtotal });
-            dataGridView1.Location = new Point(8, 378);
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.Size = new Size(1216, 282);
-            dataGridView1.TabIndex = 34;
+            dgv.AllowUserToAddRows = false;
+            dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgv.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dgv.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgv.Columns.AddRange(new DataGridViewColumn[] { coliteam, colqty, colprice, colsubtotal });
+            dgv.Location = new Point(8, 378);
+            dgv.Name = "dgv";
+            dgv.RowHeadersWidth = 51;
+            dgv.Size = new Size(1216, 500);
+            dgv.TabIndex = 34;
+            dgv.CellEndEdit += dgv_CellEndEdit;
+            dgv.EditingControlShowing += dgv_EditingControlShowing;
             // 
             // coliteam
             // 
@@ -149,6 +182,7 @@
             coliteam.HeaderText = "Iteam";
             coliteam.MinimumWidth = 6;
             coliteam.Name = "coliteam";
+            coliteam.ReadOnly = true;
             // 
             // colqty
             // 
@@ -163,6 +197,7 @@
             colprice.HeaderText = "Price";
             colprice.MinimumWidth = 6;
             colprice.Name = "colprice";
+            colprice.ReadOnly = true;
             // 
             // colsubtotal
             // 
@@ -170,17 +205,7 @@
             colsubtotal.HeaderText = "SubTotal";
             colsubtotal.MinimumWidth = 6;
             colsubtotal.Name = "colsubtotal";
-            // 
-            // quantity
-            // 
-            quantity.Location = new Point(646, 325);
-            quantity.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
-            quantity.Name = "quantity";
-            quantity.Size = new Size(196, 47);
-            quantity.TabIndex = 33;
-            quantity.TextAlign = HorizontalAlignment.Center;
-            quantity.Value = new decimal(new int[] { 1, 0, 0, 0 });
-            quantity.KeyDown += quantity_KeyDown;
+            colsubtotal.ReadOnly = true;
             // 
             // label7
             // 
@@ -189,15 +214,6 @@
             label7.Size = new Size(150, 44);
             label7.TabIndex = 32;
             label7.Text = "Quantity";
-            // 
-            // numericUpDown1
-            // 
-            numericUpDown1.Location = new Point(257, 322);
-            numericUpDown1.Name = "numericUpDown1";
-            numericUpDown1.ReadOnly = true;
-            numericUpDown1.Size = new Size(227, 47);
-            numericUpDown1.TabIndex = 31;
-            numericUpDown1.TextAlign = HorizontalAlignment.Center;
             // 
             // label6
             // 
@@ -209,11 +225,14 @@
             // 
             // Category
             // 
+            Category.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            Category.AutoCompleteSource = AutoCompleteSource.ListItems;
             Category.FormattingEnabled = true;
             Category.Location = new Point(257, 267);
             Category.Name = "Category";
             Category.Size = new Size(585, 49);
             Category.TabIndex = 28;
+            Category.SelectedIndexChanged += Category_SelectedIndexChanged;
             Category.KeyDown += Category_KeyDown;
             // 
             // label5
@@ -235,7 +254,7 @@
             // Date
             // 
             Date.ForeColor = SystemColors.Highlight;
-            Date.Location = new Point(686, 104);
+            Date.Location = new Point(677, 107);
             Date.Name = "Date";
             Date.ReadOnly = true;
             Date.Size = new Size(404, 47);
@@ -305,14 +324,35 @@
             Number_Invoice.Name = "Number_Invoice";
             Number_Invoice.Size = new Size(290, 47);
             Number_Invoice.TabIndex = 21;
+            Number_Invoice.Text = "00000312";
             Number_Invoice.TextAlign = HorizontalAlignment.Center;
+            // 
+            // error
+            // 
+            error.ContainerControl = this;
+            // 
+            // printDocument1
+            // 
+            printDocument1.PrintPage += printDocument1_PrintPage;
+            // 
+            // printPreviewDialog1
+            // 
+            printPreviewDialog1.AutoScrollMargin = new Size(0, 0);
+            printPreviewDialog1.AutoScrollMinSize = new Size(0, 0);
+            printPreviewDialog1.ClientSize = new Size(400, 300);
+            printPreviewDialog1.Document = printDocument1;
+            printPreviewDialog1.Enabled = true;
+            printPreviewDialog1.Icon = (Icon)resources.GetObject("printPreviewDialog1.Icon");
+            printPreviewDialog1.Name = "printPreviewDialog1";
+            printPreviewDialog1.Visible = false;
+            printPreviewDialog1.Load += printPreviewDialog1_Load;
             // 
             // App
             // 
             AutoScaleDimensions = new SizeF(18F, 41F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoScroll = true;
-            ClientSize = new Size(1249, 708);
+            ClientSize = new Size(1249, 905);
             Controls.Add(pmain);
             Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
             Margin = new Padding(7, 6, 7, 6);
@@ -323,10 +363,9 @@
             SizeChanged += App_SizeChanged;
             pmain.ResumeLayout(false);
             pmain.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
-            ((System.ComponentModel.ISupportInitialize)quantity).EndInit();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgv).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)error).EndInit();
             ResumeLayout(false);
         }
 
@@ -342,20 +381,23 @@
         private Label lable2;
         private Label label2;
         private TextBox Number_Invoice;
-        private NumericUpDown numericUpDown1;
         private Label label6;
         private ComboBox Category;
         private Label label5;
-        private DataGridView dataGridView1;
-        private NumericUpDown quantity;
+        private DataGridView dgv;
         private Label label7;
+        private TextBox total;
+        private Label label8;
+        private Button button2;
+        private Button add;
+        private TextBox price;
+        private TextBox quantity;
         private DataGridViewTextBoxColumn coliteam;
         private DataGridViewTextBoxColumn colqty;
         private DataGridViewTextBoxColumn colprice;
         private DataGridViewTextBoxColumn colsubtotal;
-        private TextBox textBox2;
-        private Label label8;
-        private Button button2;
-        private Button add;
+        private ErrorProvider error;
+        private System.Drawing.Printing.PrintDocument printDocument1;
+        private PrintPreviewDialog printPreviewDialog1;
     }
 }
